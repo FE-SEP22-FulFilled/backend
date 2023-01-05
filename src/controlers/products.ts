@@ -13,19 +13,32 @@ export const getAll = async (req: Request, res: Response) => {
     }
 
     const displayedPhones = phones?.filter((phone) => {
-      switch (int) {
-        case 16:
-          return phone.id <= 16;
+      // switch (int) {
+      //   case 16:
+      //     return phone.id <= 16;
 
-        case 8:
-          return phone.id <= 8;
+      //   case 8:
+      //     return phone.id <= 8;
 
-        case 4:
-          return phone.id <= 4;
+      //   case 4:
+      //     return phone.id <= 4;
 
-        default:
-          return phone.id <= 16;
+      //   default:
+      //     return phone.id <= 16;
+      // }
+      if (int === 16) {
+        return phone.id <= 16;
       }
+
+      if (int === 8) {
+        return phone.id <= 8;
+      }
+
+      if (int === 4) {
+        return phone.id <= 4;
+      }
+
+      return phone.id <= 16;
     });
 
     res.send(displayedPhones);

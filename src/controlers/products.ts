@@ -2,14 +2,7 @@ import { Request, Response } from 'express';
 import * as productServices from '../services/products';
 
 export const getAll = async (req: Request, res: Response) => {
-  // eslint-disable-next-line no-console
-  console.log(req);
+  const phones = await productServices.getAll();
 
-  try {
-    const phones = await productServices.getAll();
-
-    res.send(phones);
-  } catch {
-    res.sendStatus(404);
-  }
+  res.send(phones);
 };

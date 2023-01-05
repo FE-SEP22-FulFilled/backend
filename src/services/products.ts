@@ -5,6 +5,5 @@ import fs from 'fs/promises';
 export const getAll = async () => {
   return fs
     .readFile('./src/api/phones.json', 'utf-8')
-    .then((data) => JSON.parse(data))
-    .catch((error) => console.log(error, 'error'));
+    .then((data) => JSON.parse(data));
 };

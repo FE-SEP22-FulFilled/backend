@@ -1,50 +1,39 @@
 /* eslint-disable no-console */
 import { Request, Response } from 'express';
+import { Query } from 'src/types/Query';
+import { Results } from 'src/types/Results';
 import * as productServices from '../services/products';
 
-export const getAll = async (req: Request, res: Response) => {
-  try {
-    const phones = await productServices.getAll();
-    const { quantity } = req.query;
-    let int = Number(quantity);
+export const getPhonesByQuery = async (req: Request, res: Response) => {
+  const phones = await productServices.getAll();
+  let { page, limit } = req.query as Query;
 
-    if (!int) {
-      int = 16;
-    }
-
-    const displayedPhones = phones?.filter((phone) => {
-      // switch (int) {
-      //   case 16:
-      //     return phone.id <= 16;
-
-      //   case 8:
-      //     return phone.id <= 8;
-
-      //   case 4:
-      //     return phone.id <= 4;
-
-      //   default:
-      //     return phone.id <= 16;
-      // }
-      if (int === 16) {
-        return phone.id <= 16;
-      }
-
-      if (int === 8) {
-        return phone.id <= 8;
-      }
-
-      if (int === 4) {
-        return phone.id <= 4;
-      }
-
-      return phone.id <= 16;
-    });
-
-    res.send(displayedPhones);
-  } catch (error) {
-    console.log(error);
-
-    res.sendStatus(404);
+  if (!page) {
+    page = 1;
   }
+
+  if (!limit) {
+    limit = 8;
+  }
+
+  const startIndex = (+page - 1) * +limit;
+  const endIndex = +page * +limit;
+  const results: Results = {};
+
+  if (phones && endIndex < phones.length) {
+    results.next = {
+      page: +page + 1,
+      limit,
+    };
+  }
+
+  if (startIndex > 0) {
+    results.previous = {
+      page: +page - 1,
+      limit,
+    };
+  }
+
+  results.results = phones?.slice(startIndex, endIndex);
+  res.send(results);
 };

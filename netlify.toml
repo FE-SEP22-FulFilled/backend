@@ -1,9 +1,8 @@
 [build]
-  command = "npm run build"
-  publish = "out"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+  publish = "dist/"
+  functions = "functions"
 
 [functions]
-  included_files = [".next/*.json"]
+  directory = "src"
+  included_files = ["src/api/**/*", "public/**/*"]
+  

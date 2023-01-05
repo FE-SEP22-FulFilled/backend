@@ -4,13 +4,7 @@
 import * as productServices from '../services/products';
 
 export const getAll = async (req, res) => {
-  try {
-    const phones = await productServices.getAll();
+  const phones = await productServices.getAll();
 
-    res.send(phones);
-  } catch (error) {
-    console.log(error);
-
-    res.sendStatus(404);
-  }
+  res.send(phones);
 };

@@ -1,19 +1,23 @@
+/* eslint-disable no-console */
+
 import express from 'express';
 import cors from 'cors';
 import serverless from 'serverless-http';
-
-const router = express.Router();
+import { router as productsRouter } from './routes/products';
 
 const app = express();
+const API_PATH = '/.netlify/functions/server';
 
 app.use(cors());
 
-router.get('/', (req, res) => {
-  res.json({
-    hello: '12345',
-  });
-});
-
-app.use('/.netlify/functions/server', router);
+app.use(`${API_PATH}/products`, productsRouter);
 
 export const handler = serverless(app);
+
+// for local testing
+
+// const PORT = 5000 || null;
+
+// app.listen(PORT, () => {
+//   console.log(`server started at port ${PORT}`);
+// });

@@ -12,7 +12,7 @@ export const getAll = async (req: Request, res: Response) => {
       int = 16;
     }
 
-    const displayedPhones = phones?.filter(phone => {
+    const displayedPhones = phones?.filter((phone) => {
       switch (int) {
         case 16:
           return phone.id <= 16;

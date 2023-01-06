@@ -3,4 +3,4 @@ import * as productController from '../controlers/products';
 
 export const router = express.Router();
 
-router.get('/', productController.getAll);
+router.get('/', productController.getPhonesByQuery);

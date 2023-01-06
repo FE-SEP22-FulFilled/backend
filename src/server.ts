@@ -18,7 +18,8 @@ export const handler = serverless(app);
 
 // for local testing
 
-// const PORT = 5000 || null;
-// app.listen(PORT, () => {
-//   console.log(`server started at port ${PORT}`);
-// });
+const PORT = 5000 || null;
+
+app.listen(PORT, () => {
+  console.log(`server started at port ${PORT}`);
+});

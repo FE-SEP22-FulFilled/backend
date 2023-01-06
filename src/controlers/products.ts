@@ -34,6 +34,9 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
     };
   }
 
-  results.results = phones?.slice(startIndex, endIndex);
+  if (phones) {
+    results.results = phones.slice(startIndex, endIndex);
+  }
+
   res.send(results);
 };

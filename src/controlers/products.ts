@@ -8,14 +8,6 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
   const phones = await productServices.getAll();
   let { page, limit } = req.query as Query;
 
-  if (!page) {
-    page = 1;
-  }
-
-  if (!limit) {
-    limit = 8;
-  }
-
   const startIndex = (+page - 1) * +limit;
   const endIndex = +page * +limit;
   const results: Results = {};

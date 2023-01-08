@@ -6,7 +6,19 @@ import * as productServices from '../services/products';
 
 export const getPhonesByQuery = async (req: Request, res: Response) => {
   const phones = await productServices.getAll();
-  const { page, limit } = req.query as Query;
+  let { page, limit } = req.query as Query;
+
+  if (!page && !limit && phones) {
+    limit = phones.length;
+  }
+
+  if (!page) {
+    page = 1;
+  }
+
+  if (!limit) {
+    limit = 8;
+  }
 
   const startIndex = (+page - 1) * +limit;
   const endIndex = +page * +limit;

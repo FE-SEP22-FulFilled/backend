@@ -1,11 +1,19 @@
 /* eslint-disable no-console */
 import { Request, Response } from 'express';
+import { Product } from 'src/types/Product';
 import { Query } from 'src/types/Query';
 import { Results } from 'src/types/Results';
 import * as productServices from '../services/products';
 
 export const getPhonesByQuery = async (req: Request, res: Response) => {
   const phones = await productServices.getAll();
+
+  if (!phones) {
+    res.sendStatus(404);
+
+    return;
+  }
+
   let { page, limit } = req.query as Query;
 
   if (!page && !limit && phones) {
@@ -51,11 +59,32 @@ export const getOne = async (req: Request, res: Response) => {
   const foundedPhone = await productServices.getOne(phoneId);
 
   if (!foundedPhone) {
-    // eslint-disable-next-line no-param-reassign
-    res.statusCode = 404;
+    res.sendStatus(404);
 
     return;
   }
 
   res.send(foundedPhone);
+};
+
+export const getRandomPhones = async (req: Request, res: Response) => {
+  const phones = await productServices.getAll();
+
+  if (!phones) {
+    res.sendStatus(404);
+
+    return;
+  }
+
+  const randomPhones: Product[] = [];
+
+  for (let i = 0; i <= 7; i += 1) {
+    const randomPhone = phones[Math.floor(Math.random() * phones.length) + 4];
+
+    randomPhones.push(randomPhone);
+  }
+
+  const result = [...new Set(randomPhones)];
+
+  res.send(result);
 };

@@ -44,3 +44,18 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
 
   res.send(results);
 };
+
+export const getOne = async (req: Request, res: Response) => {
+  const { phoneId } = req.params;
+
+  const foundedPhone = await productServices.getOne(phoneId);
+
+  if (!foundedPhone) {
+    // eslint-disable-next-line no-param-reassign
+    res.statusCode = 404;
+
+    return;
+  }
+
+  res.send(foundedPhone);
+};

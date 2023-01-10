@@ -40,6 +40,20 @@ export const getRandomPhones = async () => {
       randomPhones.push(randomPhone);
     }
 
-    return [...new Set(randomPhones)];
+    return [...new Set(randomPhones)].filter(item => item);
   }
+};
+
+export const getDIscountPhones = async (phones: Product[]) => {
+  const discountPersent = 15; // here we can modify discount
+
+  return phones.map((phone) => {
+    const discount = (phone.price / 100) * discountPersent;
+    const discountPrice = Math.floor(phone.price - discount);
+
+    return {
+      ...phone,
+      discountPrice,
+    };
+  });
 };

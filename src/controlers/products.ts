@@ -88,3 +88,19 @@ export const getRandomPhones = async (req: Request, res: Response) => {
 
   res.send(result);
 };
+
+export const getNewPhones = async (req: Request, res: Response) => {
+  const phones = await productServices.getAll();
+
+  if (!phones) {
+    res.sendStatus(404);
+
+    return;
+  }
+
+  const newestPhones = phones.filter(phone => phone.year >= 2019);
+
+  newestPhones.length = 6;
+
+  res.send(newestPhones);
+};

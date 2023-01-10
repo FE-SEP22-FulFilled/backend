@@ -40,7 +40,7 @@ export const getRandomPhones = async () => {
       randomPhones.push(randomPhone);
     }
 
-    return [...new Set(randomPhones)].filter(item => item);
+    return [...new Set(randomPhones)].filter((item) => item);
   }
 };
 

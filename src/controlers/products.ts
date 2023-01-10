@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { Request, Response } from 'express';
-import { Product } from 'src/types/Product';
 import { Query } from 'src/types/Query';
 import { Results } from 'src/types/Results';
 import * as productServices from '../services/products';
@@ -68,6 +67,18 @@ export const getOne = async (req: Request, res: Response) => {
 };
 
 export const getRandomPhones = async (req: Request, res: Response) => {
+  const randomPhones = await productServices.getRandomPhones();
+
+  if (!randomPhones) {
+    res.sendStatus(404);
+
+    return;
+  }
+
+  res.send(randomPhones);
+};
+
+export const getNewPhones = async (req: Request, res: Response) => {
   const phones = await productServices.getAll();
 
   if (!phones) {
@@ -76,15 +87,39 @@ export const getRandomPhones = async (req: Request, res: Response) => {
     return;
   }
 
-  const randomPhones: Product[] = [];
+  const newestPhones = phones.filter((phone) => phone.year >= 2019);
 
-  for (let i = 0; i <= 7; i += 1) {
-    const randomPhone = phones[Math.floor(Math.random() * phones.length) + 4];
+  newestPhones.length = 6;
 
-    randomPhones.push(randomPhone);
+  res.send(newestPhones);
+};
+
+export const getDiscountPhones = async (req: Request, res: Response) => {
+  try {
+    const randomPhones = await productServices.getRandomPhones();
+    const discountPersent = 15;
+
+    if (!randomPhones) {
+      res.sendStatus(404);
+
+      return;
+    }
+
+    const phonesWithDiscount = randomPhones.map(phone => {
+      const discount = (phone.price / 100) * discountPersent;
+      const discountPrice = Math.floor(phone.price - discount);
+
+      return {
+        ...phone,
+        discountPrice,
+      };
+    });
+
+    console.log(phonesWithDiscount);
+
+    res.send(await phonesWithDiscount);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(404);
   }
-
-  const result = [...new Set(randomPhones)];
-
-  res.send(result);
 };

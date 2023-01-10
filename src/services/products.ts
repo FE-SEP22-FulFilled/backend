@@ -26,3 +26,20 @@ export const getOne = async (params: string) => {
     console.log(err);
   }
 };
+
+// eslint-disable-next-line consistent-return
+export const getRandomPhones = async () => {
+  const phones = await getAll();
+
+  const randomPhones: Product[] = [];
+
+  if (phones) {
+    for (let i = 0; i <= 7; i += 1) {
+      const randomPhone = phones[Math.floor(Math.random() * phones.length) + 4];
+
+      randomPhones.push(randomPhone);
+    }
+
+    return [...new Set(randomPhones)];
+  }
+};

@@ -95,31 +95,15 @@ export const getNewPhones = async (req: Request, res: Response) => {
 };
 
 export const getDiscountPhones = async (req: Request, res: Response) => {
-  try {
-    const randomPhones = await productServices.getRandomPhones();
-    const discountPersent = 15;
+  const randomPhones = await productServices.getRandomPhones();
 
-    if (!randomPhones) {
-      res.sendStatus(404);
-
-      return;
-    }
-
-    const phonesWithDiscount = randomPhones.map(phone => {
-      const discount = (phone.price / 100) * discountPersent;
-      const discountPrice = Math.floor(phone.price - discount);
-
-      return {
-        ...phone,
-        discountPrice,
-      };
-    });
-
-    console.log(phonesWithDiscount);
-
-    res.send(await phonesWithDiscount);
-  } catch (error) {
-    console.log(error);
+  if (!randomPhones) {
     res.sendStatus(404);
+
+    return;
   }
+
+  const result = await productServices.getDIscountPhones(randomPhones);
+
+  res.send(result);
 };

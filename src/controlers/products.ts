@@ -1,7 +1,11 @@
 /* eslint-disable no-console */
 import { Request, Response } from 'express';
+// import { SortBy } from 'src/types/SortBy';
 import { Query } from 'src/types/Query';
 import { Results } from 'src/types/Results';
+
+import * as SortBy from '../types/SortBy';
+
 import * as productServices from '../services/products';
 
 export const getPhonesByQuery = async (req: Request, res: Response) => {
@@ -13,7 +17,7 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
     return;
   }
 
-  let { page, limit } = req.query as Query;
+  let { page, limit, sortBy } = req.query as Query;
 
   if (!page && !limit && phones) {
     limit = phones.length;
@@ -25,6 +29,10 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
 
   if (!limit) {
     limit = 8;
+  }
+
+  if (!sortBy) {
+    sortBy = SortBy.SortBy.Nevest;
   }
 
   const startIndex = (+page - 1) * +limit;
@@ -47,6 +55,28 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
 
   if (phones) {
     results.results = phones.slice(startIndex, endIndex);
+
+    results.results.sort((phone1, phone2) => {
+      switch (sortBy) {
+        case SortBy.SortBy.Nevest:
+          return phone2.year - phone1.year;
+
+        case SortBy.SortBy.Oldest:
+          return phone1.year - phone2.year;
+
+        case SortBy.SortBy.LowPriced:
+          return phone1.price - phone2.price;
+
+        case SortBy.SortBy.HighPriced:
+          return phone2.price - phone1.price;
+
+        case SortBy.SortBy.Popular:
+          return phone2.fullPrice - phone1.fullPrice;
+
+        default:
+          return +phone2.id - +phone1.id;
+      }
+    });
   }
 
   res.send(results);

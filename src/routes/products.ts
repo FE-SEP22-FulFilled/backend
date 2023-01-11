@@ -6,5 +6,6 @@ export const router = express.Router();
 router.get('/', productController.getPhonesByQuery);
 router.get('/new', productController.getNewPhones);
 router.get('/discount', productController.getDiscountPhones);
+router.get('/fullinfo/:slug', productController.getOneBySlug);
 router.get('/:phoneId', productController.getOne);
 router.get('/:phoneId/recomended', productController.getRandomPhones);

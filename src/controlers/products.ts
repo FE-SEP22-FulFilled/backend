@@ -56,27 +56,7 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
   if (phones) {
     results.results = phones.slice(startIndex, endIndex);
 
-    results.results.sort((phone1, phone2) => {
-      switch (sortBy) {
-        case SortBy.SortBy.Nevest:
-          return phone2.year - phone1.year;
-
-        case SortBy.SortBy.Oldest:
-          return phone1.year - phone2.year;
-
-        case SortBy.SortBy.LowPriced:
-          return phone1.price - phone2.price;
-
-        case SortBy.SortBy.HighPriced:
-          return phone2.price - phone1.price;
-
-        case SortBy.SortBy.Popular:
-          return phone2.fullPrice - phone1.fullPrice;
-
-        default:
-          return +phone2.id - +phone1.id;
-      }
-    });
+    productServices.getSortedBy(results.results, sortBy);
   }
 
   res.send(results);
@@ -86,6 +66,20 @@ export const getOne = async (req: Request, res: Response) => {
   const { phoneId } = req.params;
 
   const foundedPhone = await productServices.getOne(phoneId);
+
+  if (!foundedPhone) {
+    res.sendStatus(404);
+
+    return;
+  }
+
+  res.send(foundedPhone);
+};
+
+export const getOneBySlug = async (req: Request, res: Response) => {
+  const { slug } = req.params;
+
+  const foundedPhone = await productServices.getOneBySlug(slug);
 
   if (!foundedPhone) {
     res.sendStatus(404);

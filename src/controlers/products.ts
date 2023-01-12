@@ -37,7 +37,13 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
 
   const startIndex = (+page - 1) * +limit;
   const endIndex = +page * +limit;
-  const results: Results = {};
+  const results: Results = {
+    results: phones,
+  };
+
+  if (phones) {
+    productServices.getSortedBy(results.results, sortBy);
+  }
 
   if (phones && endIndex < phones.length) {
     results.next = {
@@ -55,8 +61,6 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
 
   if (phones) {
     results.results = phones.slice(startIndex, endIndex);
-
-    productServices.getSortedBy(results.results, sortBy);
   }
 
   res.send(results);

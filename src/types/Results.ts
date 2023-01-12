@@ -1,7 +1,7 @@
 import { Product } from './Product';
 
 export type Results = {
-  results?: Product[];
+  results: Product[];
   next?: object;
   previous?: object;
 };

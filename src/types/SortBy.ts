@@ -1,8 +1,8 @@
 export enum SortBy {
   Nevest = 'newest',
   Oldest = 'oldest',
-  LowPriced = 'lowPriced',
-  HighPriced = 'highPriced',
+  LowPriced = 'low-priced',
+  HighPriced = 'high-priced',
   Popular = 'popular',
   All = 'all',
 }

@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { Request, Response } from 'express';
-// import { SortBy } from 'src/types/SortBy';
 import { Query } from 'src/types/Query';
 import { Results } from 'src/types/Results';
 
@@ -17,6 +16,7 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
     return;
   }
 
+  // eslint-disable-next-line prefer-const
   let { page, limit, sortBy } = req.query as Query;
 
   if (!page && !limit && phones) {
@@ -32,7 +32,7 @@ export const getPhonesByQuery = async (req: Request, res: Response) => {
   }
 
   if (!sortBy) {
-    sortBy = SortBy.SortBy.Nevest;
+    sortBy = SortBy.SortBy.All;
   }
 
   const startIndex = (+page - 1) * +limit;

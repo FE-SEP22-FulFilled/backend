@@ -22,7 +22,7 @@ export const getSortedBy = async (products: Product[], sortBy: string) => {
         return phone2.fullPrice - phone1.fullPrice;
 
       default:
-        return +phone2.id - +phone1.id;
+        return +phone1.id - +phone2.id;
     }
   });
 };
